@@ -16,11 +16,11 @@ import { UUID } from 'crypto';
 export class ArmaService implements OnModuleInit {
 
   private referencias: {
-    marcas: Marca[],
-    modelos: Modelo[],
-    estadosFisicos: EstadoFisico[],
-    estadosLogicos: EstadoLogico[],
-    tiposArticulos: TipoArticulo[]
+    marca: Marca[],
+    modelo: Modelo[],
+    estadosFisico: EstadoFisico[],
+    estadosLogico: EstadoLogico[],
+    tiposArticulo: TipoArticulo[]
   };
 
   async onModuleInit() {
@@ -28,13 +28,13 @@ export class ArmaService implements OnModuleInit {
   }
 
   private async initializeCache() {
-    const marcas = await this.marcaService.findAllArma();
-    const modelos = await this.modeloService.findAllArma();
-    const estadosFisicos = await this.estadoFisicoService.findAllArma();
-    const estadosLogicos = await this.estadoLogicoService.findAllArma();
-    const tiposArticulos = await this.tiposArticuloService.findAllArma();
+    const marca = await this.marcaService.findAllArma();
+    const modelo = await this.modeloService.findAllArma();
+    const estadosFisico = await this.estadoFisicoService.findAllArma();
+    const estadosLogico = await this.estadoLogicoService.findAllArma();
+    const tiposArticulo = await this.tiposArticuloService.findAllArma();
 
-    this.referencias = { marcas, modelos, estadosFisicos, estadosLogicos, tiposArticulos };
+    this.referencias = { marca, modelo, estadosFisico, estadosLogico, tiposArticulo };
   }
 
 
@@ -61,29 +61,29 @@ export class ArmaService implements OnModuleInit {
     console.log(`Evento recibido para actualizar ${payload.entity}`);
 
     if (payload.entity === 'marcas') {
-      this.referencias.marcas = await this.marcaService.findAllArma();
+      this.referencias.marca = await this.marcaService.findAllArma();
     }
 
     if (payload.entity === 'modelos') {
-      this.referencias.modelos = await this.modeloService.findAllArma();
+      this.referencias.modelo = await this.modeloService.findAllArma();
     }
   }
 
   async create(createArmaDto: CreateArmaDto) {
     try {
-      const marca = this.referencias.marcas.find(
+      const marca = this.referencias.marca.find(
         (m) => m.id_marca === createArmaDto.id_marca
       );
-      const modelo = this.referencias.modelos.find(
+      const modelo = this.referencias.modelo.find(
         (m) => m.id_modelo === createArmaDto.id_modelo
       );
-      const estado_fisico = this.referencias.estadosFisicos.find(
+      const estado_fisico = this.referencias.estadosFisico.find(
         (m) => m.id_estado_fisico === createArmaDto.id_estado_fisico
       );
-      const estado_logico = this.referencias.estadosLogicos.find(
+      const estado_logico = this.referencias.estadosLogico.find(
         (m) => m.id_estado_logico === createArmaDto.id_estado_logico
       );
-      const tipo_articulo = this.referencias.tiposArticulos.find(
+      const tipo_articulo = this.referencias.tiposArticulo.find(
         (m) => m.id_tipo_articulo === createArmaDto.id_tipo_articulo
       );
       const newArma = this.armaRepository.create({
@@ -107,7 +107,7 @@ export class ArmaService implements OnModuleInit {
   async findAll(paginationDto: PaginationDto) {
     const { pagina = 1, limite = 10 } = paginationDto;
 
-    const armas = await this.armaRepository.findAndCount({
+    const [armas, total] = await this.armaRepository.findAndCount({
       skip: (pagina - 1) * limite,
       take: limite,
       where: {
