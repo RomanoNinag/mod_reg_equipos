@@ -14,8 +14,8 @@ export class ArmaController {
   }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.armaService.findAll(paginationDto);
+  findAll() {
+    return this.armaService.findAll();
   }
   // @Get()
   // findAll() {

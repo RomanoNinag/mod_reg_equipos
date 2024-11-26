@@ -104,22 +104,23 @@ export class ArmaService implements OnModuleInit {
   async getReferencias() {
     return this.referencias
   }
-  async findAll(paginationDto: PaginationDto) {
-    const { pagina = 1, limite = 10 } = paginationDto;
+  async findAll() {
+    // const { pagina = 1, limite = 10 } = paginationDto;
 
-    const [armas, total] = await this.armaRepository.findAndCount({
-      skip: (pagina - 1) * limite,
-      take: limite,
-      where: {
-        deleted_at: null,
-      }
-    })
-    return armas;
-    // return this.armaRepository.find({
+    // const [armas, total] = await this.armaRepository.findAndCount({
+    //   skip: (pagina - 1) * limite,
+    //   take: limite,
     //   where: {
     //     deleted_at: null,
     //   }
-    // });
+    // })
+    // return armas;
+
+    return this.armaRepository.find({
+      where: {
+        deleted_at: null,
+      }
+    });
   }
 
   findOne(id: number) {
