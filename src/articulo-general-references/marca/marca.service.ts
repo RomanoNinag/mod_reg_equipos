@@ -1,9 +1,10 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { CreateMarcaDto } from './dto/create-marca.dto';
 import { UpdateMarcaDto } from './dto/update-marca.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Marca } from './entities/marca.entity';
 import { DataSource, ILike, In, Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class MarcaService {
@@ -11,12 +12,11 @@ export class MarcaService {
   constructor(
     @InjectRepository(Marca)
     private readonly marcaRepository: Repository<Marca>,
-    private readonly dataSource: DataSource
+    private readonly dataSource: DataSource,
+    private readonly eventEmitter: EventEmitter2,
   ) {
 
   }
-
-
   async create(createMarcaDto: CreateMarcaDto) {
 
     try {
@@ -24,7 +24,8 @@ export class MarcaService {
 
       //impactamos la bd (esperamos siempre)
       await this.marcaRepository.save(marca);
-
+      //emitimos even
+      this.eventEmitter.emit('cache.update', { entity: 'marcas' });
 
       return marca;
     } catch (error) {
@@ -33,8 +34,7 @@ export class MarcaService {
 
   }
 
-  findAll() {
-
+  async findAll() {
     return this.marcaRepository.find({
       where: {
         deleted_at: null,

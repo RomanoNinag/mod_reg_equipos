@@ -13,6 +13,9 @@ import { TipoArticuloModule } from './articulo-general-references/tipo-articulo/
 import { MarcaModule } from './articulo-general-references/marca/marca.module';
 import { ModeloModule } from './articulo-general-references/modelo/modelo.module';
 import { EquipoModule } from './equipo/equipo.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -29,6 +32,13 @@ import { EquipoModule } from './equipo/equipo.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    EventEmitterModule.forRoot(),
+    // CacheModule.register({
+    //   isGlobal: true,
+    //   ttl: 5,
+    //   store: redisStore,
+
+    // }),
     MarcaModule,
     ModeloModule,
     ArmaModule,

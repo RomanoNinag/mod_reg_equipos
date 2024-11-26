@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseInterceptors } from '@nestjs/common';
 import { MarcaService } from './marca.service';
 import { CreateMarcaDto } from './dto/create-marca.dto';
 import { UpdateMarcaDto } from './dto/update-marca.dto';
@@ -19,7 +19,9 @@ export class MarcaController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
+    // console.log('Iside controller');
+
     return this.marcaService.findAll();
   }
 
