@@ -9,8 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Arma } from './entities/arma.entity';
 import { EstadoFisico, EstadoFisicoService, EstadoLogico, EstadoLogicoService, Marca, MarcaService, Modelo, ModeloService, TipoArticulo, TipoArticuloService } from 'src/articulo-general-references';
 import { OnEvent } from '@nestjs/event-emitter';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { UUID } from 'crypto';
+
 
 @Injectable()
 export class ArmaService implements OnModuleInit {
@@ -102,7 +101,13 @@ export class ArmaService implements OnModuleInit {
   }
 
   async getReferencias() {
-    return this.referencias
+    return {
+      marca: this.referencias.marca,
+      modelo: this.referencias.modelo,
+      estado_fisico: this.referencias.estadosFisico,
+      estado_logico: this.referencias.estadosLogico,
+      tipo_articulo: this.referencias.tiposArticulo
+    }
   }
   async findAll() {
     // const { pagina = 1, limite = 10 } = paginationDto;
