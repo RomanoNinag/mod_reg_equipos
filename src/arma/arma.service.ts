@@ -57,7 +57,7 @@ export class ArmaService implements OnModuleInit {
   //actualizamos los datos despues de modificaciones
   @OnEvent('cache.update')
   async handleCacheUpdate(payload: { entity: string }) {
-    console.log(`Evento recibido para actualizar ${payload.entity}`);
+    // console.log(`Evento recibido para actualizar ${payload.entity}`);
 
     if (payload.entity === 'marcas') {
       this.referencias.marca = await this.marcaService.findAllArma();

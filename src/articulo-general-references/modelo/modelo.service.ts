@@ -123,4 +123,15 @@ export class ModeloService {
       this.handleDBExceptions(error);
     }
   }
+  async truncateModelos(): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    try {
+      await queryRunner.query(`TRUNCATE TABLE "modelos" RESTART IDENTITY CASCADE`);
+    } catch (error) {
+      this.handleDBExceptions(error);
+    } finally {
+      await queryRunner.release();
+    }
+  }
 }

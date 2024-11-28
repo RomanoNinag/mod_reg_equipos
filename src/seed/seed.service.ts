@@ -23,7 +23,7 @@ export class SeedService {
     private readonly tiposArticuloService: TipoArticuloService,
   ) { }
   async runSeedRelaciones() {
-    this.deleteRelTables();
+    await this.deleteRelTables();
     await this.insertMarcas();
     await this.insertModelos();
     await this.insertEstadosFisicos();
@@ -32,8 +32,10 @@ export class SeedService {
   }
 
   private async deleteRelTables() {
-    await this.marcaService.deleteAllMarcas();
-    await this.modeloService.deleteAllModelos();
+    // await this.marcaService.deleteAllMarcas();
+    // await this.modeloService.deleteAllModelos();
+    await this.marcaService.truncateMarcas();
+    await this.modeloService.truncateModelos();
     await this.estadoFisicoService.truncateEstadosFisicos();
     await this.estadoLogicoService.truncateEstadosLogicos();
     await this.tiposArticuloService.truncateTiposArticulos();
