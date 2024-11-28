@@ -4,6 +4,7 @@ import { UpdateModeloDto } from './dto/update-modelo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Modelo } from './entities/modelo.entity';
 import { DataSource, getConnection, In, QueryRunner, Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ModeloService {
@@ -12,6 +13,7 @@ export class ModeloService {
     @InjectRepository(Modelo)
     private readonly modeloRepository: Repository<Modelo>,
     private readonly dataSource: DataSource,
+    private readonly eventEmitter: EventEmitter2
 
   ) { }
 
@@ -21,6 +23,7 @@ export class ModeloService {
 
       await this.modeloRepository.save(modelo);
 
+      this.eventEmitter.emit('cache.update', { entity: 'modelos' })
       return modelo;
 
     } catch (error) {

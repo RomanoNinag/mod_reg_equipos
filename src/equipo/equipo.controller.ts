@@ -33,6 +33,6 @@ export class EquipoController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.equipoService.remove(+id);
+    return this.equipoService.softDelete(id);
   }
 }

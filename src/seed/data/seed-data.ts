@@ -47,11 +47,11 @@ interface SeedData {
 
 export const initialData: SeedData = {
     marcas: [
-        { nombre_marca: 'BROWNING', tipo: 1 },
+        // { nombre_marca: 'BROWNING', tipo: 1 },
         { nombre_marca: 'BERETTA', tipo: 1 },
         { nombre_marca: 'CZ', tipo: 1 },
         { nombre_marca: 'SIG SAUER', tipo: 1 },
-        { nombre_marca: 'Safariland', tipo: 2 },
+        // { nombre_marca: 'Safariland', tipo: 2 },
         { nombre_marca: 'Honeywell', tipo: 2 },
         { nombre_marca: 'Point Blank Enterprises', tipo: 2 },
         { nombre_marca: 'Ballistic', tipo: 2 },
