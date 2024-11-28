@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { EquipoService } from './equipo.service';
 import { CreateEquipoDto } from './dto/create-equipo.dto';
 import { UpdateEquipoDto } from './dto/update-equipo.dto';
@@ -22,8 +22,8 @@ export class EquipoController {
     return this.equipoService.getCachedData();
   }
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.equipoService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.equipoService.findOneById(id);
   }
 
   @Patch(':id')

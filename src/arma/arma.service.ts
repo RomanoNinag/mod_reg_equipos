@@ -110,21 +110,11 @@ export class ArmaService implements OnModuleInit {
     }
   }
   async findAll() {
-    // const { pagina = 1, limite = 10 } = paginationDto;
-
-    // const [armas, total] = await this.armaRepository.findAndCount({
-    //   skip: (pagina - 1) * limite,
-    //   take: limite,
-    //   where: {
-    //     deleted_at: null,
-    //   }
-    // })
-    // return armas;
-
     return this.armaRepository.find({
       where: {
         deleted_at: null,
-      }
+      },
+      relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
     });
   }
 

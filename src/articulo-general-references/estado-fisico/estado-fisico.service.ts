@@ -28,16 +28,16 @@ export class EstadoFisicoService {
   findAll() {
     return this.estadoFisicoRepository.find();
   }
-  findAllArma() {
-    return this.estadoFisicoRepository.find({
+  async findAllArma() {
+    return await this.estadoFisicoRepository.find({
       where: {
         tipo: In([1, 3]),
         deleted_at: null,
       }
     })
   }
-  findAllEquipo() {
-    return this.estadoFisicoRepository.find({
+  async findAllEquipo() {
+    return await this.estadoFisicoRepository.find({
       where: {
         tipo: In([2, 3]),
         deleted_at: null,

@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateEquipoDto } from './dto/create-equipo.dto';
 import { UpdateEquipoDto } from './dto/update-equipo.dto';
 import { EstadoFisico, EstadoFisicoService, EstadoLogico, EstadoLogicoService, Marca, MarcaService, Modelo, ModeloService, TipoArticulo, TipoArticuloService } from 'src/articulo-general-references';
@@ -124,14 +124,24 @@ export class EquipoService {
   }
 
 
-  findAll() {
-    return `This action returns all equipo`;
+  async findAll() {
+    return await this.equipoRepository.find({
+      where: {
+        deleted_at: null,
+      },
+      relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+    });
   }
 
   findOne(id: number) {
     return `This action returns a #${id} equipo`;
   }
-
+  async findOneById(id: string) {
+    const equipo = await this.equipoRepository.findOneBy({ id_articulo: id });
+    if (!equipo)
+      throw new NotFoundException(`equipo con id ${id} no encontrado`);
+    return equipo;
+  }
   update(id: number, updateEquipoDto: UpdateEquipoDto) {
     return `This action updates a #${id} equipo`;
   }
@@ -139,7 +149,12 @@ export class EquipoService {
   remove(id: number) {
     return `This action removes a #${id} equipo`;
   }
-
+  async softDelete(id: string) {
+    const equipo = await this.findOneById(id);
+    equipo.deleted_at = new Date(); // Actualiza el campo deleted_at con la fecha actual
+    await this.equipoRepository.save(equipo);
+    return equipo;
+  }
   private handleDBExceptions(error) {
     if (error.code === '23505')
       throw new BadRequestException(error.detail);

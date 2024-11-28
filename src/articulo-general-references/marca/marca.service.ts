@@ -108,7 +108,7 @@ export class MarcaService {
       console.log(error)
       throw new BadRequestException(error.detail);
     }
-    // console.log(error)
+    console.log(error)
     throw new InternalServerErrorException('Otro tipo de error de base de datos!')
   }
 

@@ -29,16 +29,16 @@ export class TipoArticuloService {
     return this.tipoArticuloRepository.find();
   }
 
-  findAllArma() {
-    return this.tipoArticuloRepository.find({
+  async findAllArma() {
+    return await this.tipoArticuloRepository.find({
       where: {
         tipo: In([1, 3]),
         deleted_at: null,
       }
     })
   }
-  findAllEquipo() {
-    return this.tipoArticuloRepository.find({
+  async findAllEquipo() {
+    return await this.tipoArticuloRepository.find({
       where: {
         tipo: In([2, 3]),
         deleted_at: null,

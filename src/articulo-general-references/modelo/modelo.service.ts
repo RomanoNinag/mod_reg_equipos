@@ -38,16 +38,16 @@ export class ModeloService {
     // return `This action returns all modelo`;
   }
 
-  findAllArma() {
-    return this.modeloRepository.find({
+  async findAllArma() {
+    return await this.modeloRepository.find({
       where: {
         tipo: In([1, 3]),
         deleted_at: null,
       }
     })
   }
-  findAllEquipo() {
-    return this.modeloRepository.find({
+  async findAllEquipo() {
+    return await this.modeloRepository.find({
       where: {
         tipo: In([2, 3]),
         deleted_at: null,

@@ -28,16 +28,16 @@ export class EstadoLogicoService {
   findAll() {
     return this.estadoLogicoRepository.find();
   }
-  findAllArma() {
-    return this.estadoLogicoRepository.find({
+  async findAllArma() {
+    return await this.estadoLogicoRepository.find({
       where: {
         tipo: In([1, 3]),
         deleted_at: null,
       }
     })
   }
-  findAllEquipo() {
-    return this.estadoLogicoRepository.find({
+  async findAllEquipo() {
+    return await this.estadoLogicoRepository.find({
       where: {
         tipo: In([2, 3]),
         deleted_at: null,
