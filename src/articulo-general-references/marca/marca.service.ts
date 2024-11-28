@@ -140,7 +140,7 @@ export class MarcaService {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     try {
-      await queryRunner.query(`TRUNCATE TABLE marcas RESTART IDENTITY CASCADE`);
+      await queryRunner.query(`TRUNCATE TABLE "marcas" RESTART IDENTITY CASCADE`);
     } catch (error) {
       this.handleDBExceptions(error);
     } finally {
