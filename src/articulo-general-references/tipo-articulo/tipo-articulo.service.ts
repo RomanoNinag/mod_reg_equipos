@@ -4,6 +4,7 @@ import { UpdateTipoArticuloDto } from './dto/update-tipo-articulo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, In, Repository } from 'typeorm';
 import { TipoArticulo } from './entities/tipo-articulo.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class TipoArticuloService {
@@ -12,13 +13,15 @@ export class TipoArticuloService {
   constructor(
     @InjectRepository(TipoArticulo)
     private readonly tipoArticuloRepository: Repository<TipoArticulo>,
-    private readonly dataSource: DataSource
+    private readonly dataSource: DataSource,
+    private readonly eventEmitter: EventEmitter2,
   ) { }
 
   async create(createTipoArticuloDto: CreateTipoArticuloDto) {
     try {
       const tipoArticulo = this.tipoArticuloRepository.create(createTipoArticuloDto);
       await this.tipoArticuloRepository.save(tipoArticulo);
+      this.eventEmitter.emit('cache.update', { entity: 'tipoArticulo' });
       return tipoArticulo;
     } catch (error) {
       this.handleDBExceptions(error);

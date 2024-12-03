@@ -6,6 +6,8 @@ import { ModeloModule } from 'src/articulo-general-references/modelo/modelo.modu
 import { EstadoFisicoModule } from 'src/articulo-general-references/estado-fisico/estado-fisico.module';
 import { EstadoLogicoModule } from 'src/articulo-general-references/estado-logico/estado-logico.module';
 import { TipoArticuloModule } from 'src/articulo-general-references/tipo-articulo/tipo-articulo.module';
+import { ArmaModule } from 'src/arma/arma.module';
+import { EquipoModule } from 'src/equipo/equipo.module';
 
 @Module({
   controllers: [SeedController],
@@ -15,7 +17,9 @@ import { TipoArticuloModule } from 'src/articulo-general-references/tipo-articul
     ModeloModule,
     EstadoFisicoModule,
     EstadoLogicoModule,
-    TipoArticuloModule
+    TipoArticuloModule,
+    ArmaModule,
+    EquipoModule
   ]
 })
 export class SeedModule { }

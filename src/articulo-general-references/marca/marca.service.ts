@@ -25,7 +25,7 @@ export class MarcaService {
       //impactamos la bd (esperamos siempre)
       await this.marcaRepository.save(marca);
       //emitimos even
-      this.eventEmitter.emit('cache.update', { entity: 'marcas' });
+      this.eventEmitter.emit('cache.update', { entity: 'marca' });
 
       return marca;
     } catch (error) {

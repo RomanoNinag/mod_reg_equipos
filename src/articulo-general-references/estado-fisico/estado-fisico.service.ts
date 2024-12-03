@@ -4,6 +4,7 @@ import { UpdateEstadoFisicoDto } from './dto/update-estado-fisico.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EstadoFisico } from './entities/estado-fisico.entity';
 import { DataSource, In, Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class EstadoFisicoService {
@@ -12,13 +13,16 @@ export class EstadoFisicoService {
   constructor(
     @InjectRepository(EstadoFisico)
     private readonly estadoFisicoRepository: Repository<EstadoFisico>,
-    private readonly dataSource: DataSource
+    private readonly dataSource: DataSource,
+    private readonly eventEmitter: EventEmitter2,
   ) { }
 
   async create(createEstadoFisicoDto: CreateEstadoFisicoDto) {
     try {
       const estadoFisico = this.estadoFisicoRepository.create(createEstadoFisicoDto);
       await this.estadoFisicoRepository.save(estadoFisico);
+      this.eventEmitter.emit('cache.update', { entity: 'estadoFisico' });
+
       return estadoFisico;
     } catch (error) {
       this.handleDBExceptions(error);

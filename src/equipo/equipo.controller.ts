@@ -28,7 +28,7 @@ export class EquipoController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEquipoDto: UpdateEquipoDto) {
-    return this.equipoService.update(+id, updateEquipoDto);
+    return this.equipoService.update(id, updateEquipoDto);
   }
 
   @Delete(':id')

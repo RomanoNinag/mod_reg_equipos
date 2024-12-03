@@ -4,6 +4,7 @@ import { UpdateEstadoLogicoDto } from './dto/update-estado-logico.dto';
 import { EstadoLogico } from './entities/estado-logico.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, In, Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class EstadoLogicoService {
@@ -12,13 +13,17 @@ export class EstadoLogicoService {
   constructor(
     @InjectRepository(EstadoLogico)
     private readonly estadoLogicoRepository: Repository<EstadoLogico>,
-    private readonly dataSource: DataSource
+    private readonly dataSource: DataSource,
+    private readonly eventEmitter: EventEmitter2,
   ) { }
 
   async create(createEstadoLogicoDto: CreateEstadoLogicoDto) {
     try {
       const estadoLogico = this.estadoLogicoRepository.create(createEstadoLogicoDto);
       await this.estadoLogicoRepository.save(estadoLogico);
+
+      this.eventEmitter.emit('cache.update', { entity: 'estadoLogico' });
+
       return estadoLogico;
     } catch (error) {
       this.handleDBExceptions(error);

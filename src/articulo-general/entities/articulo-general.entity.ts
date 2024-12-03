@@ -32,23 +32,38 @@ export class ArticuloGeneral extends BaseEntity {
     //references
 
 
-    @ManyToOne(() => Marca)
+    @ManyToOne(
+        () => Marca,
+        { eager: true }
+    )
     @JoinColumn({ name: "id_marca" })
     marca: Marca;
 
-    @ManyToOne(() => Modelo)
+    @ManyToOne(
+        () => Modelo,
+        { eager: true }
+    )
     @JoinColumn({ name: "id_modelo" })
     modelo: Modelo;
 
-    @ManyToOne(() => EstadoLogico)
+    @ManyToOne(
+        () => EstadoLogico,
+        { eager: true }
+    )
     @JoinColumn({ name: "id_estado_logico" })
     estado_logico: EstadoLogico;
 
-    @ManyToOne(() => EstadoFisico)
+    @ManyToOne(
+        () => EstadoFisico,
+        { eager: true }
+    )
     @JoinColumn({ name: 'id_estado_fisico' })
     estado_fisico: EstadoFisico;
 
-    @ManyToOne(() => TipoArticulo)
+    @ManyToOne(
+        () => TipoArticulo,
+        { eager: true }
+    )
     @JoinColumn({ name: 'id_tipo_articulo' })
     tipo_articulo: TipoArticulo;
 }

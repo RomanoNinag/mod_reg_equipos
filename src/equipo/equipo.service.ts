@@ -4,16 +4,13 @@ import { UpdateEquipoDto } from './dto/update-equipo.dto';
 import { EstadoFisico, EstadoFisicoService, EstadoLogico, EstadoLogicoService, Marca, MarcaService, Modelo, ModeloService, TipoArticulo, TipoArticuloService } from 'src/articulo-general-references';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Equipo } from './entities/equipo.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
+import { OnEvent } from '@nestjs/event-emitter';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class EquipoService {
 
-  private marcaCache: { [id: number]: Marca } = {};
-  private modeloCache: { [id: number]: Modelo } = {};
-  private estadoFisicoCache: { [id: number]: EstadoFisico } = {};
-  private estadoLogicoCache: { [id: number]: EstadoLogico } = {};
-  private tipoArticuloCache: { [id: number]: TipoArticulo } = {};
   constructor(
     @InjectRepository(Equipo)
     private readonly equipoRepository: Repository<Equipo>,
@@ -28,102 +25,105 @@ export class EquipoService {
     private readonly estadoLogicoService: EstadoLogicoService,
     @Inject()
     private readonly tiposArticuloService: TipoArticuloService,
+    private readonly dataSouce: DataSource,
 
   ) { }
 
+  private referencias: {
+    marca: Marca[],
+    modelo: Modelo[],
+    estadosFisico: EstadoFisico[],
+    estadosLogico: EstadoLogico[],
+    tiposArticulo: TipoArticulo[]
+  };
+
   async onModuleInit() {
-    await this.initializeCache(); // Tipo 1 para armas
-  }
-  async initializeCache() {
-    const marcas = await this.marcaService.findAllEquipo();
-    this.marcaCache = Object.fromEntries(marcas.map(marca => [marca.id_marca, marca]));
-
-    const modelos = await this.modeloService.findAllEquipo();
-    this.modeloCache = Object.fromEntries(modelos.map(modelo => [modelo.id_modelo, modelo]));
-
-    const estadosFisicos = await this.estadoFisicoService.findAllEquipo();
-    this.estadoFisicoCache = Object.fromEntries(estadosFisicos.map(estado => [estado.id_estado_fisico, estado]));
-
-    const estadosLogicos = await this.estadoLogicoService.findAllEquipo();
-    this.estadoLogicoCache = Object.fromEntries(estadosLogicos.map(estado => [estado.id_estado_logico, estado]));
-
-    const tiposArticulos = await this.tiposArticuloService.findAllEquipo();
-    this.tipoArticuloCache = Object.fromEntries(tiposArticulos.map(tipo => [tipo.id_tipo_articulo, tipo]));
+    await this.initializeCache();
   }
 
-  private async getCachedEntity<T>(
-    id: number,
-    cache: { [id: number]: T },
-    fetchFunction: (id: number) => Promise<T>
-  ): Promise<T> {
-    if (cache[id]) return cache[id];
-    const entity = await fetchFunction(id);
-    cache[id] = entity;
-    return entity;
+  private async initializeCache() {
+    const marca = await this.marcaService.findAllEquipo();
+    const modelo = await this.modeloService.findAllEquipo();
+    const estadosFisico = await this.estadoFisicoService.findAllEquipo();
+    const estadosLogico = await this.estadoLogicoService.findAllEquipo();
+    const tiposArticulo = await this.tiposArticuloService.findAllEquipo();
+
+    this.referencias = { marca, modelo, estadosFisico, estadosLogico, tiposArticulo };
+  }
+
+  // async onModuleInit() {
+  //   await this.initializeCache(); // Tipo 1 para armas
+  // }
+  @OnEvent('cache.update')
+  async handleCacheUpdate(payload: { entity: string }) {
+    // Actualizar las referencias del cache según la entidad
+    if (payload.entity === 'marca') {
+      this.referencias.marca = await this.marcaService.findAllEquipo();
+    }
+
+    if (payload.entity === 'modelo') {
+      this.referencias.modelo = await this.modeloService.findAllEquipo();
+    }
+
+    if (payload.entity === 'estadoFisico') {
+      this.referencias.estadosFisico = await this.estadoFisicoService.findAllEquipo();
+    }
+
+    if (payload.entity === 'estadoLogico') {
+      this.referencias.estadosLogico = await this.estadoLogicoService.findAllEquipo();
+    }
+
+    if (payload.entity === 'tipoArticulo') {
+      this.referencias.tiposArticulo = await this.tiposArticuloService.findAllEquipo();
+    }
   }
 
   async create(createEquipoDto: CreateEquipoDto) {
     try {
-      const marca = await this.getCachedEntity(
-        createEquipoDto.id_marca,
-        this.marcaCache,
-        this.marcaService.findOneById.bind(this.marcaService)
+      // Buscar las referencias en el cache
+      const marca = this.referencias.marca.find(
+        (m) => m.id_marca === createEquipoDto.id_marca
+      );
+      const modelo = this.referencias.modelo.find(
+        (m) => m.id_modelo === createEquipoDto.id_modelo
+      );
+      const estado_fisico = this.referencias.estadosFisico.find(
+        (m) => m.id_estado_fisico === createEquipoDto.id_estado_fisico
+      );
+      const estado_logico = this.referencias.estadosLogico.find(
+        (m) => m.id_estado_logico === createEquipoDto.id_estado_logico
+      );
+      const tipo_articulo = this.referencias.tiposArticulo.find(
+        (m) => m.id_tipo_articulo === createEquipoDto.id_tipo_articulo
       );
 
-      const modelo = await this.getCachedEntity(
-        createEquipoDto.id_modelo,
-        this.modeloCache,
-        this.modeloService.findOneById.bind(this.modeloService)
-      );
-
-      const estadoFisico = await this.getCachedEntity(
-        createEquipoDto.id_estado_fisico,
-        this.estadoFisicoCache,
-        this.estadoFisicoService.findOneById.bind(this.estadoFisicoService)
-      );
-
-      const estadoLogico = await this.getCachedEntity(
-        createEquipoDto.id_estado_logico,
-        this.estadoLogicoCache,
-        this.estadoLogicoService.findOneById.bind(this.estadoLogicoService)
-      );
-
-      const tipoArticulo = await this.getCachedEntity(
-        createEquipoDto.id_tipo_articulo,
-        this.tipoArticuloCache,
-        this.tiposArticuloService.findOneById.bind(this.tiposArticuloService)
-      );
-
+      // Crear un nuevo equipo utilizando las referencias encontradas
       const newEquipo = this.equipoRepository.create({
         ...createEquipoDto,
         marca,
         modelo,
-        estado_fisico: estadoFisico,
-        estado_logico: estadoLogico,
-        tipo_articulo: tipoArticulo,
+        estado_fisico,
+        estado_logico,
+        tipo_articulo
       });
+
+      // Guardar el nuevo equipo en la base de datos
       return await this.equipoRepository.save(newEquipo);
 
     } catch (error) {
       this.handleDBExceptions(error);
     }
-    // return 'This action adds a new equipo';
   }
 
   async getCachedData() {
-    const data = {
-      marca: Object.values(this.marcaCache),
-      modelo: Object.values(this.modeloCache),
-      estado_fisico: Object.values(this.estadoFisicoCache),
-      estado_logico: Object.values(this.estadoLogicoCache),
-      tipo_articulo: Object.values(this.tipoArticuloCache),
-    }
-    // console.log(data);
-
-    return data;
+    return {
+      marca: this.referencias.marca,
+      modelo: this.referencias.modelo,
+      estado_fisico: this.referencias.estadosFisico,
+      estado_logico: this.referencias.estadosLogico,
+      tipo_articulo: this.referencias.tiposArticulo,
+    };
   }
-
-
   async findAll() {
     return await this.equipoRepository.find({
       where: {
@@ -133,8 +133,24 @@ export class EquipoService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} equipo`;
+  async findOne(term: string) {
+    let equipo: Equipo;
+    if (isUUID(term)) {
+      equipo = await this.equipoRepository.findOne({
+        where: {
+          id_articulo: term,
+        },
+        relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+      })
+    } else {
+      equipo = await this.equipoRepository.findOne({
+        where: {
+          cod_registro: term,
+        },
+        relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+      })
+    }
+    return equipo;
   }
   async findOneById(id: string) {
     const equipo = await this.equipoRepository.findOneBy({ id_articulo: id });
@@ -142,8 +158,46 @@ export class EquipoService {
       throw new NotFoundException(`equipo con id ${id} no encontrado`);
     return equipo;
   }
-  update(id: number, updateEquipoDto: UpdateEquipoDto) {
-    return `This action updates a #${id} equipo`;
+  async update(id: string, updateEquipoDto: UpdateEquipoDto) {
+    try {
+      const { id_marca, id_modelo, id_estado_fisico, id_estado_logico, id_tipo_articulo, ...toUpdate } = updateEquipoDto;
+
+      const equipo = await this.equipoRepository.preload({
+        id_articulo: id,
+        ...toUpdate,
+      });
+
+      if (!equipo)
+        throw new NotFoundException(`Equipo con id ${id} no encontrado`);
+
+      const marca = this.referencias.marca.find(
+        (m) => m.id_marca === id_marca
+      );
+      const modelo = this.referencias.modelo.find(
+        (m) => m.id_modelo === id_modelo
+      );
+      const estado_fisico = this.referencias.estadosFisico.find(
+        (m) => m.id_estado_fisico === id_estado_fisico
+      );
+      const estado_logico = this.referencias.estadosLogico.find(
+        (m) => m.id_estado_logico === id_estado_logico
+      );
+      const tipo_articulo = this.referencias.tiposArticulo.find(
+        (m) => m.id_tipo_articulo === id_tipo_articulo
+      );
+      equipo.marca = marca;
+      equipo.modelo = modelo;
+      equipo.estado_fisico = estado_fisico;
+      equipo.estado_logico = estado_logico;
+      equipo.tipo_articulo = tipo_articulo;
+
+      await this.equipoRepository.save(equipo);
+
+      return this.findOne(id);
+    } catch (error) {
+      this.handleDBExceptions(error);
+
+    }
   }
 
   remove(id: number) {
@@ -165,4 +219,16 @@ export class EquipoService {
     // console.log(error)
     throw new InternalServerErrorException('Otro tipo de error de base de datos!')
   }
+  async truncateEquipos(): Promise<void> {
+    const queryRunner = this.dataSouce.createQueryRunner();
+    await queryRunner.connect();
+    try {
+      await queryRunner.query(`TRUNCATE TABLE "equipos" RESTART IDENTITY CASCADE`)
+    } catch (error) {
+      this.handleDBExceptions(error);
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
 }

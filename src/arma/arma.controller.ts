@@ -29,13 +29,13 @@ export class ArmaController {
     return this.armaService.getReferencias();
   }
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.armaService.findOneById(id);
+  findOne(@Param('id') id: string) {
+    return this.armaService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArmaDto: UpdateArmaDto) {
-    return this.armaService.update(+id, updateArmaDto);
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateArmaDto: UpdateArmaDto) {
+    return this.armaService.update(id, updateArmaDto);
   }
 
   @Delete(':id')

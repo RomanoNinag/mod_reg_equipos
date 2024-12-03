@@ -7,6 +7,8 @@ import { ModeloService } from 'src/articulo-general-references/modelo/modelo.ser
 import { EstadoFisicoService } from 'src/articulo-general-references/estado-fisico/estado-fisico.service';
 import { EstadoLogicoService } from 'src/articulo-general-references/estado-logico/estado-logico.service';
 import { TipoArticuloService } from 'src/articulo-general-references/tipo-articulo/tipo-articulo.service';
+import { ArmaService } from 'src/arma/arma.service';
+import { EquipoService } from 'src/equipo/equipo.service';
 
 @Injectable()
 export class SeedService {
@@ -21,14 +23,26 @@ export class SeedService {
     private readonly estadoLogicoService: EstadoLogicoService,
     @Inject()
     private readonly tiposArticuloService: TipoArticuloService,
+    @Inject()
+    private readonly armaService: ArmaService,
+    @Inject()
+    private readonly equipoService: EquipoService,
   ) { }
   async runSeedRelaciones() {
+    //elimina las tablas de armas y equipos
+    await this.deleteArmas();
+    await this.deleteEquipos();
+    //eliminamos las tablas de relaciones
     await this.deleteRelTables();
+    //insertamos los datos referencias
     await this.insertMarcas();
     await this.insertModelos();
     await this.insertEstadosFisicos();
     await this.insertEstadosLogicos();
     await this.insertTiposArticulos();
+    //insertamos los datos de armas y equipos
+    await this.insertArmas();
+    await this.insertEquipos();
   }
 
   private async deleteRelTables() {
@@ -39,6 +53,14 @@ export class SeedService {
     await this.estadoFisicoService.truncateEstadosFisicos();
     await this.estadoLogicoService.truncateEstadosLogicos();
     await this.tiposArticuloService.truncateTiposArticulos();
+
+  }
+
+  private async deleteArmas() {
+    await this.armaService.truncateArmas();
+  }
+  private async deleteEquipos() {
+    await this.equipoService.truncateEquipos();
   }
 
   private async insertDataSequentially<T>(data: T[], service: { create: (item: T) => Promise<any> }) {
@@ -68,51 +90,12 @@ export class SeedService {
     return this.insertDataSequentially(initialData.tiposArticulo, this.tiposArticuloService);
   }
 
-  // private async insertMarcas() {
-  //   const marcas = initialData.marcas;
+  private async insertArmas() {
+    return this.insertDataSequentially(initialData.armas, this.armaService);
+  }
 
-  //   const inserPromises = [];
+  private async insertEquipos() {
+    return this.insertDataSequentially(initialData.equipos, this.equipoService);
+  }
 
-  //   marcas.forEach(marca => {
-  //     inserPromises.push(this.marcaService.create(marca));
-  //   });
-  //   //esperamos la insercion
-  //   await Promise.all(inserPromises);
-
-  //   return true;
-  // }
-  // private async insertModelos() {
-  //   const modelos = initialData.modelos;
-
-  //   const inserPromises = [];
-
-  //   modelos.forEach(modelo => {
-  //     inserPromises.push(this.modeloService.create(modelo));
-  //   });
-  //   //esperamos la insercion
-  //   await Promise.all(inserPromises);
-
-  //   return true;
-  // }
-  // private async insertEstadosFisicos() {
-  //   const estadosFisicos = initialData.estadosFisicos;
-
-  //   const inserPromises = [];
-
-  //   estadosFisicos.forEach(estadoFisico => {
-  //     inserPromises.push(this.estadoFisicoService.create(estadoFisico));
-  //   });
-  //   //esperamos la insercion
-  //   await Promise.all(inserPromises);
-
-  //   return true;
-  // }
-  // private async insertEstadosLogicos() {
-  //   const estadosLogicos = initialData.estadosLogicos;
-
-  //   for (const estadoLogico of estadosLogicos) {
-  //     await this.estadoLogicoService.create(estadoLogico); // Espera a que cada inserción se complete antes de continuar
-  //   }
-  //   return true;
-  // }
 }

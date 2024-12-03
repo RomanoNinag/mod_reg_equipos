@@ -23,6 +23,7 @@ import { TipoArticuloModule } from 'src/articulo-general-references/tipo-articul
     EstadoFisicoModule,
     EstadoLogicoModule,
     TipoArticuloModule
-  ]
+  ],
+  exports: [ArmaService]
 })
 export class ArmaModule { }
