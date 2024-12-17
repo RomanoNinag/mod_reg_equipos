@@ -16,7 +16,7 @@ export class CreateArmaDto extends CreateArticuloGeneralDto {
 
     @IsOptional()
     @IsInt()
-    nro_cargador?: number;
+    nro_cargador: number;
 
     @IsInt()
     capacidad_cargador: number;
