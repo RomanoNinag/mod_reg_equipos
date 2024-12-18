@@ -124,6 +124,13 @@ export class EquipoService {
       tipo_articulo: this.referencias.tiposArticulo,
     };
   }
+
+  async getMarcas() {
+    return this.referencias.marca;
+  }
+  async getModelos() {
+    return this.referencias.modelo;
+  }
   async findAll() {
     return await this.equipoRepository.find({
       where: {

@@ -122,6 +122,14 @@ export class ArmaService implements OnModuleInit {
       tipo_articulo: this.referencias.tiposArticulo
     }
   }
+  async getMarcas() {
+    return this.referencias.marca;
+  }
+
+  async getModelos() {
+    return this.referencias.modelo;
+  }
+
   async findAll() {
     return this.armaRepository.find({
       where: {

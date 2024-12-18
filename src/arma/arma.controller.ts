@@ -28,6 +28,16 @@ export class ArmaController {
   findReferences() {
     return this.armaService.getReferencias();
   }
+  @Get('referencia/marca')
+  findReferencesMarca() {
+    return this.armaService.getMarcas();
+  }
+
+  @Get('referencia/modelo')
+  findReferencesModelo() {
+    return this.armaService.getModelos();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.armaService.findOne(id);

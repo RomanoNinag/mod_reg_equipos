@@ -21,6 +21,15 @@ export class EquipoController {
   findReferences() {
     return this.equipoService.getCachedData();
   }
+  @Get('referencia/marca')
+  findReferencesMarca() {
+    return this.equipoService.getMarcas();
+  }
+
+  @Get('referencia/modelo')
+  findReferencesModelo() {
+    return this.equipoService.getModelos();
+  }
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.equipoService.findOneById(id);

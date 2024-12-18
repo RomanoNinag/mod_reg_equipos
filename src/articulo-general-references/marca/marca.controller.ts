@@ -18,13 +18,25 @@ export class MarcaController {
     return this.marcaService.create(createMarcaDto);
   }
 
+  // @Get()
+  // async findAll() {
+  //   // console.log('Iside controller');
+
+  //   return this.marcaService.findAll();
+  // }
+
+  // @Get()
+  // async findAllArma() {
+  //   // console.log('Iside controller');
+
+  //   return this.marcaService.findAllArma();
+  // }
   @Get()
-  async findAll() {
+  async findAllEquipo() {
     // console.log('Iside controller');
 
-    return this.marcaService.findAll();
+    return this.marcaService.findAllEquipo();
   }
-
   @Get(':term')
   findOne(@Param('term') term: string) {
     // console.log(id);
