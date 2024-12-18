@@ -23,7 +23,7 @@ export class ModeloService {
 
       await this.modeloRepository.save(modelo);
 
-      this.eventEmitter.emit('cache.update', { entity: 'modelos' })
+      this.eventEmitter.emit('cache.update', { entity: 'modelo' })
       return modelo;
 
     } catch (error) {

@@ -35,7 +35,7 @@ export class MarcaService {
   }
 
   async findAll() {
-    return this.marcaRepository.find({
+    return await this.marcaRepository.find({
       where: {
         deleted_at: null,
       }
