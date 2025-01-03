@@ -21,8 +21,8 @@ jobs:
         password: ${{ secrets.MS_GITHUB_TOKEN }}
 
     - name: Build Docker image with timestamp tag
-      run: docker build . --file dockerfile.dev --tag ghcr.io/romanoninag/scaep-ofi-uni-ms:primerpush
+      run: docker build . --file dockerfile.dev --tag ghcr.io/romanoninag/scaep-armequip-ms:primerpush
 
     - name: Push Docker image
-      run: docker push ghcr.io/romanoninag/scaep-ofi-uni-ms:primerpush
+      run: docker push ghcr.io/romanoninag/scaep-armequip-ms:primerpush
 
