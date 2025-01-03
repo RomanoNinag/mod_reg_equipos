@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Inject, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateArmaDto } from './dto/create-arma.dto';
 import { UpdateArmaDto } from './dto/update-arma.dto';
 import { DataSource, Repository } from 'typeorm';
@@ -10,6 +10,8 @@ import { Arma } from './entities/arma.entity';
 import { EstadoFisico, EstadoFisicoService, EstadoLogico, EstadoLogicoService, Marca, MarcaService, Modelo, ModeloService, TipoArticulo, TipoArticuloService } from 'src/articulo-general-references';
 import { OnEvent } from '@nestjs/event-emitter';
 import { isUUID } from 'class-validator';
+import { RpcException } from '@nestjs/microservices';
+import { stat } from 'fs';
 
 
 @Injectable()
@@ -146,6 +148,7 @@ export class ArmaService implements OnModuleInit {
       arma = await this.armaRepository.findOne({
         where: {
           id_articulo: term,
+          deleted_at: null
         },
         relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
       })
@@ -158,7 +161,10 @@ export class ArmaService implements OnModuleInit {
       })
     }
     if (!arma)
-      throw new NotFoundException(`arma con id ${term} no encontrado`);
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: `arma con id ${term} no encontrado`
+      });
     return arma;
   }
 
@@ -221,7 +227,7 @@ export class ArmaService implements OnModuleInit {
     return `This action removes a #${id} arma`;
   }
   async softDelete(id: string) {
-    const arma = await this.findOneById(id);
+    const arma = await this.findOne(id);
     arma.deleted_at = new Date(); // Actualiza el campo deleted_at con la fecha actual
     await this.armaRepository.save(arma);
     return arma;
@@ -229,14 +235,23 @@ export class ArmaService implements OnModuleInit {
 
 
   private handleDBExceptions(error) {
-    if (error.code === '23505')
-      throw new BadRequestException(error.detail);
+    console.log(error);
+
+    if (error.code === '23505') {
+      // throw new BadRequestException(error.detail);
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: error.detail,
+      })
+    }
     if (error.code === '23502') {
-      console.log(error)
-      throw new BadRequestException(error.detail);
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: error.detail,
+      })
     }
     // console.log(error)
-    throw new InternalServerErrorException('Otro tipo de error de base de datos!')
+    throw new RpcException('Otro tipo de error de base de datos!')
   }
 
   async truncateArmas(): Promise<void> {

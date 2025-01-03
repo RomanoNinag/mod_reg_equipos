@@ -16,6 +16,7 @@ import { EquipoModule } from './equipo/equipo.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { envs } from './config/envs';
 
 @Module({
   imports: [
@@ -24,11 +25,12 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      database: process.env.DB_NAME,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
+      url: envs.databaseUrl,
+      // host: process.env.DB_HOST,
+      // port: +process.env.DB_PORT,
+      // database: process.env.DB_NAME,
+      // username: process.env.DB_USERNAME,
+      // password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
       synchronize: true,
     }),
