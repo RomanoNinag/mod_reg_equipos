@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { envs } from './config/envs';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
-
+  const logger = new Logger('Modulo-Articulo');
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.RMQ,
     options: {
@@ -33,6 +33,6 @@ async function bootstrap() {
   // await app.listen(3000);
   // await app.listen(parseInt(process.env.PORT) || 3001);
   await app.listen();
-
+  logger.log('MS Articulo is running');
 }
 bootstrap();
