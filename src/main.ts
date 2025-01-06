@@ -33,6 +33,6 @@ async function bootstrap() {
   // await app.listen(3000);
   // await app.listen(parseInt(process.env.PORT) || 3001);
   await app.listen();
-  logger.log('MS Articulo is running');
+  logger.log('MS Arma Equipo is running');
 }
 bootstrap();
