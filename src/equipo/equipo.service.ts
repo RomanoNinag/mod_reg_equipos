@@ -1,12 +1,13 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateEquipoDto } from './dto/create-equipo.dto';
 import { UpdateEquipoDto } from './dto/update-equipo.dto';
 import { EstadoFisico, EstadoFisicoService, EstadoLogico, EstadoLogicoService, Marca, MarcaService, Modelo, ModeloService, TipoArticulo, TipoArticuloService } from 'src/articulo-general-references';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Equipo } from './entities/equipo.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Not, Repository } from 'typeorm';
 import { OnEvent } from '@nestjs/event-emitter';
 import { isUUID } from 'class-validator';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class EquipoService {
@@ -162,7 +163,10 @@ export class EquipoService {
   async findOneById(id: string) {
     const equipo = await this.equipoRepository.findOneBy({ id_articulo: id });
     if (!equipo)
-      throw new NotFoundException(`equipo con id ${id} no encontrado`);
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: `equipo con id ${id} no encontrado`
+      });
     return equipo;
   }
   async update(id: string, updateEquipoDto: UpdateEquipoDto) {
@@ -174,9 +178,13 @@ export class EquipoService {
         ...toUpdate,
       });
 
-      if (!equipo)
-        throw new NotFoundException(`Equipo con id ${id} no encontrado`);
-
+      if (!equipo) {
+        // throw new RpcException(`equipo con id ${id} no encontrado`);
+        throw new RpcException({
+          status: HttpStatus.BAD_REQUEST,
+          message: `Equipo con id ${id} no encontrado`
+        });
+      }
       const marca = this.referencias.marca.find(
         (m) => m.id_marca === id_marca
       );
@@ -200,10 +208,12 @@ export class EquipoService {
 
       await this.equipoRepository.save(equipo);
 
-      return this.findOne(id);
+      return this.findOneById(id);
     } catch (error) {
+      if (error instanceof RpcException) {
+        throw error
+      }
       this.handleDBExceptions(error);
-
     }
   }
 
@@ -217,14 +227,24 @@ export class EquipoService {
     return equipo;
   }
   private handleDBExceptions(error) {
-    if (error.code === '23505')
-      throw new BadRequestException(error.detail);
-    if (error.code === '23502') {
-      console.log(error)
-      throw new BadRequestException(error.detail);
+    console.log(error);
+
+    if (error.code === '23505') {
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: error.detail,
+      });
     }
+    if (error.code === '23502') {
+      // console.log(error)
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: error.detail,
+      });
+    }
+    return error;
     // console.log(error)
-    throw new InternalServerErrorException('Otro tipo de error de base de datos!')
+    // throw new InternalServerErrorException('Equipo Otro tipo de error de base de datos!')
   }
   async truncateEquipos(): Promise<void> {
     const queryRunner = this.dataSouce.createQueryRunner();

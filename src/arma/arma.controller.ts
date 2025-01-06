@@ -27,18 +27,18 @@ export class ArmaController {
     return this.armaService.getReferencias();
   }
   @Get('referencia/marca')
+  @MessagePattern('get.articulo.arma.referencia.marca')
   findReferencesMarca() {
     return this.armaService.getMarcas();
   }
 
   @Get('referencia/modelo')
+  @MessagePattern('get.articulo.arma.referencia.modelo')
   findReferencesModelo() {
     return this.armaService.getModelos();
   }
 
   @Get(':id')
-  // findOne(@Param('id') id: string) {
-  // @Get(':id')
   @MessagePattern('get.articulo.arma.id')
   findOne(@Payload('id', ParseUUIDPipe) id: string) {
     return this.armaService.findOne(id);

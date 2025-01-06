@@ -188,8 +188,12 @@ export class ArmaService implements OnModuleInit {
         ...toUpdate,
       })
       if (!arma) {
-        throw new NotFoundException(`Arma con id ${id} no encontrado`);
+        throw new RpcException({
+          status: HttpStatus.BAD_REQUEST,
+          message: `Arma con id ${id} no encontrado`
+        });
       }
+
       // Buscar las referencias en el cache para actualizar el arma
       const marca = this.referencias.marca.find(
         (m) => m.id_marca === id_marca
@@ -219,6 +223,9 @@ export class ArmaService implements OnModuleInit {
 
       return this.findOne(id); // Devuelve el arma actualizada
     } catch (error) {
+      if(error instanceof RpcException) {
+        throw error;
+      }
       this.handleDBExceptions(error);
     }
   }
