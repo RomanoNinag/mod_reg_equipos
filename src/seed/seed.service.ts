@@ -43,6 +43,7 @@ export class SeedService {
     //insertamos los datos de armas y equipos
     await this.insertArmas();
     await this.insertEquipos();
+    return 'Seed ejecutado correctamente';
   }
 
   private async deleteRelTables() {
