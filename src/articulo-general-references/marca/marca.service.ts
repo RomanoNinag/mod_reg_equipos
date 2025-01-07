@@ -97,6 +97,7 @@ export class MarcaService {
     const marca = await this.findOneById(id);
     marca.deleted_at = new Date(); // Actualiza el campo deleted_at con la fecha actual
     await this.marcaRepository.save(marca);
+    this.eventEmitter.emit('cache.update', { entity: 'marca' });
     return marca;
   }
 

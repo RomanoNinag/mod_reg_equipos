@@ -88,6 +88,7 @@ export class ModeloService {
     // }
     modelo.deleted_at = new Date(); // Actualiza el campo deleted_at con la fecha actual
     await this.modeloRepository.save(modelo);
+    this.eventEmitter.emit('cache.update', { entity: 'modelo' });
     return modelo;
   }
 
