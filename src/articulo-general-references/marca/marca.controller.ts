@@ -2,44 +2,28 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseInterce
 import { MarcaService } from './marca.service';
 import { CreateMarcaDto } from './dto/create-marca.dto';
 import { UpdateMarcaDto } from './dto/update-marca.dto';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('marca')
 export class MarcaController {
   constructor(private readonly marcaService: MarcaService) { }
 
   @Post()
-  // @HttpCode(200)
   create(@Body() createMarcaDto: CreateMarcaDto) {
-    //const { nombre_marca, tipo } = createMarcaDto;
-    // const dtoToSend = {
-    //   ...createMarcaDto,
-    //   tipo: createMarcaDto.tipo.code,
-    // };
     return this.marcaService.create(createMarcaDto);
   }
-
-  // @Get()
-  // async findAll() {
-  //   // console.log('Iside controller');
-
-  //   return this.marcaService.findAll();
-  // }
-
-  // @Get()
-  // async findAllArma() {
-  //   // console.log('Iside controller');
-
-  //   return this.marcaService.findAllArma();
-  // }
+  @Get()
+  @MessagePattern('get.articulo.marca')
+  async findAll() {
+    return this.marcaService.findAll();
+  }
   @Get()
   async findAllEquipo() {
-    // console.log('Iside controller');
 
     return this.marcaService.findAllEquipo();
   }
   @Get(':term')
   findOne(@Param('term') term: string) {
-    // console.log(id);
 
     return this.marcaService.findOne(term);
   }
@@ -56,7 +40,8 @@ export class MarcaController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @MessagePattern('delete.articulo.marca')
+  remove(@Payload('id') id: string) {
     return this.marcaService.softDelete(+id);
   }
   //other methods

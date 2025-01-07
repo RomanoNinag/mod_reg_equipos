@@ -80,9 +80,9 @@ export class ModeloService {
     return modelo;
   }
 
-  async softDelete(id: string) {
+  async softDelete(id: number) {
     // const marca = await this.marcaRepository.findOne({ where: { id_marca: id } });
-    const modelo = await this.findOne(+id);
+    const modelo = await this.findOne(id);
     // if (!marca) {
     //   throw new NotFoundException(`Marca con ID ${id} no encontrada`);
     // }
