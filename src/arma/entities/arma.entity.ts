@@ -4,13 +4,13 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColu
 @Entity('armas')
 export class Arma extends ArticuloGeneral {
 
-    @Column('text', {
-        unique: true,
-    })
-    cod_registro: string;
+    // @Column('text', {
+    //     unique: true,
+    // })
+    // cod_registro: string;
 
     @Column('text', {
-        nullable: true
+        unique: true,
     })
     serie: string;
 

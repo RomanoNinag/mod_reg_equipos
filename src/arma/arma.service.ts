@@ -155,7 +155,7 @@ export class ArmaService implements OnModuleInit {
     } else {
       arma = await this.armaRepository.findOne({
         where: {
-          cod_registro: term,
+          serie: term,
         },
         relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
       })
