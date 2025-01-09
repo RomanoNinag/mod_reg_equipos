@@ -27,7 +27,7 @@ export class ArmaController {
   }
   @MessagePattern('get.articulo.arma.asignado')
   findAsignados() {
-    return this.armaService.findDisponibles();
+    return this.armaService.findAsignados();
   }
   // @Get('referencia')
   @MessagePattern('get.articulo.arma.referencia')
