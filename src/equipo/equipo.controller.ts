@@ -20,6 +20,14 @@ export class EquipoController {
     return this.equipoService.findAll();
   }
 
+  @MessagePattern('get.articulo.equipo.disponible')
+  findDisponibles() {
+    return this.equipoService.findDisponibles();
+  }
+  @MessagePattern('get.articulo.equipo.asignado')
+  findAsignados() {
+    return this.equipoService.findAsignados();
+  }
   @Get('referencia')
   @MessagePattern('get.articulo.equipo.referencia')
   findReferences() {

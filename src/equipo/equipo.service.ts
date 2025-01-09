@@ -141,6 +141,24 @@ export class EquipoService {
     });
   }
 
+  async findDisponibles() {
+    return await this.equipoRepository.find({
+      where: {
+        asignado: false,
+        deleted_at: null,
+      },
+      relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+    });
+  }
+  async findAsignados() {
+    return await this.equipoRepository.find({
+      where: {
+        asignado: true,
+        deleted_at: null,
+      },
+      relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+    });
+  }
   async findOne(term: string) {
     let equipo: Equipo;
     if (isUUID(term)) {

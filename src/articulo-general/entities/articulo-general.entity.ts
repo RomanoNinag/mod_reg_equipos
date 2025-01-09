@@ -29,6 +29,10 @@ export class ArticuloGeneral extends BaseEntity {
     })
     industria: string;
 
+    @Column('bool', {
+        default: false
+    })
+    asignado: boolean;
     //references
 
 

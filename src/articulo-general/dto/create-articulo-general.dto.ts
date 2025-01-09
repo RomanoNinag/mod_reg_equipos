@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsInt, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator";
 
 export class CreateArticuloGeneralDto {
     @IsDate()
@@ -14,6 +14,9 @@ export class CreateArticuloGeneralDto {
     @IsString()
     industria?: string;
 
+    @IsBoolean()
+    asignado: boolean;
+    
     // Relaciones
     @IsInt()
     id_marca: number;

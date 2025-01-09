@@ -141,6 +141,24 @@ export class ArmaService implements OnModuleInit {
     });
   }
 
+  async findDisponibles() {
+    return this.armaRepository.find({
+      where: {
+        deleted_at: null,
+        asignado: false
+      },
+      relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+    });
+  }
+  async findAsignados() {
+    return this.armaRepository.find({
+      where: {
+        deleted_at: null,
+        asignado: true
+      },
+      relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+    });
+  }
   async findOne(term: string) {
     let arma: Arma;
     if (isUUID(term)) {
@@ -223,7 +241,7 @@ export class ArmaService implements OnModuleInit {
 
       return this.findOne(id); // Devuelve el arma actualizada
     } catch (error) {
-      if(error instanceof RpcException) {
+      if (error instanceof RpcException) {
         throw error;
       }
       this.handleDBExceptions(error);
