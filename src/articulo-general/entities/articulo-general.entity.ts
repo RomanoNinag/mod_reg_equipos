@@ -14,16 +14,6 @@ export class ArticuloGeneral extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id_articulo: string;
 
-    @Column('date', {
-
-    })
-    fecha_registro: Date;
-
-    @Column('text', {
-        nullable: true
-    })
-    procedencia: string;
-
     @Column('text', {
         nullable: true
     })
@@ -38,35 +28,35 @@ export class ArticuloGeneral extends BaseEntity {
 
     @ManyToOne(
         () => Marca,
-        { eager: true }
+        // { eager: true }
     )
     @JoinColumn({ name: "id_marca" })
     marca: Marca;
 
     @ManyToOne(
         () => Modelo,
-        { eager: true }
+        // { eager: true }
     )
     @JoinColumn({ name: "id_modelo" })
     modelo: Modelo;
 
     @ManyToOne(
         () => EstadoLogico,
-        { eager: true }
+        // { eager: true }
     )
     @JoinColumn({ name: "id_estado_logico" })
     estado_logico: EstadoLogico;
 
     @ManyToOne(
         () => EstadoFisico,
-        { eager: true }
+        // { eager: true }
     )
     @JoinColumn({ name: 'id_estado_fisico' })
     estado_fisico: EstadoFisico;
 
     @ManyToOne(
         () => TipoArticulo,
-        { eager: true }
+        // { eager: true }
     )
     @JoinColumn({ name: 'id_tipo_articulo' })
     tipo_articulo: TipoArticulo;

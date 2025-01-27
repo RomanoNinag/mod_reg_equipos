@@ -26,8 +26,6 @@ interface SeedTipoArticulo {
 }
 
 interface SeedArma {
-    fecha_registro: Date;
-    procedencia: string;
     industria: string;
     asignado: boolean;
     id_marca: number;
@@ -35,7 +33,6 @@ interface SeedArma {
     id_estado_fisico: number;
     id_estado_logico: number;
     id_tipo_articulo: number;
-    // cod_registro: string;
     serie: string;
     calibre: string;
     nro_cargador: number;
@@ -45,8 +42,6 @@ interface SeedArma {
 }
 
 interface SeedEquipo {
-    fecha_registro: Date;
-    procedencia: string;
     industria: string;
     asignado: boolean;
     id_marca: number;
@@ -54,7 +49,7 @@ interface SeedEquipo {
     id_estado_fisico: number;
     id_estado_logico: number;
     id_tipo_articulo: number;
-    cod_registro: string;
+
 }
 
 // intermedio de poner tipo de datos para el initial data
@@ -89,6 +84,8 @@ export const initialData: SeedData = {
         { nombre_modelo: 'L 5', tipo: 1 },
         { nombre_modelo: 'GAS GUN', tipo: 1 },
         { nombre_modelo: 'FM', tipo: 1 },
+        
+        
         { nombre_modelo: 'ProTec 5000', tipo: 2 },
         { nombre_modelo: 'BulletSafe V2', tipo: 2 },
         { nombre_modelo: 'Safariland 6280', tipo: 2 },
@@ -128,14 +125,18 @@ export const initialData: SeedData = {
         { nombre_tipo_articulo: 'METRALLETA', tipo: 1 },
         { nombre_tipo_articulo: 'ESCOPETA', tipo: 1 },
         { nombre_tipo_articulo: 'REVOLVER', tipo: 1 },
-        { nombre_tipo_articulo: 'CASCO', tipo: 2 },
+        { nombre_tipo_articulo: 'PISTOLA LANZA GAS', tipo: 1 },
+        { nombre_tipo_articulo: 'RIFLE LANZA GAS', tipo: 1 },
+        { nombre_tipo_articulo: 'LANZADORES', tipo: 1 },
+        { nombre_tipo_articulo: 'AMETRALLADORA', tipo: 1 },
+        { nombre_tipo_articulo: 'LANZADORES DE GRANADAS', tipo: 1 },
+
+        { nombre_tipo_articulo: 'CASCO ANTIBALAS', tipo: 2 },
         { nombre_tipo_articulo: 'ESCUDO', tipo: 2 },
         { nombre_tipo_articulo: 'CHALECO ANTIBALAS', tipo: 2 },
     ],
     armas: [
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'EEUU',
             asignado: false,
             id_marca: 1,
@@ -152,8 +153,6 @@ export const initialData: SeedData = {
             acabado: 'Cafe',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'EEUU',
             asignado: false,
             id_marca: 2,
@@ -170,8 +169,6 @@ export const initialData: SeedData = {
             acabado: 'Negro',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'EEUU',
             asignado: false,
             id_marca: 1,
@@ -188,8 +185,6 @@ export const initialData: SeedData = {
             acabado: 'Cafe',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'EEUU',
             asignado: false,
             id_marca: 2,
@@ -206,8 +201,6 @@ export const initialData: SeedData = {
             acabado: 'Negro',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'EEUU',
             asignado: false,
             id_marca: 3,
@@ -224,8 +217,6 @@ export const initialData: SeedData = {
             acabado: 'Plata',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'Alemania',
             asignado: false,
             id_marca: 4,
@@ -242,8 +233,6 @@ export const initialData: SeedData = {
             acabado: 'Negro',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'Francia',
             asignado: false,
             id_marca: 1,
@@ -260,8 +249,6 @@ export const initialData: SeedData = {
             acabado: 'Olivado',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'EEUU',
             asignado: false,
             id_marca: 2,
@@ -278,8 +265,6 @@ export const initialData: SeedData = {
             acabado: 'Negro Mate',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'Rusia',
             asignado: false,
             id_marca: 3,
@@ -296,8 +281,6 @@ export const initialData: SeedData = {
             acabado: 'Camuflado',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'Brasil',
             asignado: false,
             id_marca: 4,
@@ -314,8 +297,6 @@ export const initialData: SeedData = {
             acabado: 'Verde Militar',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'EEUU',
             asignado: false,
             id_marca: 1,
@@ -332,8 +313,6 @@ export const initialData: SeedData = {
             acabado: 'Negro Brillante',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'Italia',
             asignado: false,
             id_marca: 2,
@@ -350,8 +329,6 @@ export const initialData: SeedData = {
             acabado: 'Plata Mate',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'Francia',
             asignado: false,
             id_marca: 3,
@@ -368,8 +345,6 @@ export const initialData: SeedData = {
             acabado: 'Camuflado',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'Rusia',
             asignado: false,
             id_marca: 1,
@@ -386,8 +361,6 @@ export const initialData: SeedData = {
             acabado: 'Acero',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'Brasil',
             asignado: false,
             id_marca: 2,
@@ -404,8 +377,6 @@ export const initialData: SeedData = {
             acabado: 'Olivado',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'Alemania',
             asignado: false,
             id_marca: 4,
@@ -422,8 +393,6 @@ export const initialData: SeedData = {
             acabado: 'Negro',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'USA',
             asignado: false,
             id_marca: 3,
@@ -440,8 +409,6 @@ export const initialData: SeedData = {
             acabado: 'Plata',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'Canada',
             asignado: false,
             id_marca: 1,
@@ -458,8 +425,6 @@ export const initialData: SeedData = {
             acabado: 'Verde',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'USA',
             asignado: false,
             id_marca: 2,
@@ -476,8 +441,6 @@ export const initialData: SeedData = {
             acabado: 'Negro Mate',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotacion',
             industria: 'Rusia',
             asignado: false,
             id_marca: 4,
@@ -497,8 +460,6 @@ export const initialData: SeedData = {
 
     equipos: [
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'Austria',
             asignado: false,
             id_marca: 5,
@@ -506,11 +467,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 8,
             id_estado_logico: 3,
             id_tipo_articulo: 10,
-            cod_registro: 'abc123a'
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'Austria',
             asignado: false,
             id_marca: 5,
@@ -518,11 +476,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 8,
             id_estado_logico: 3,
             id_tipo_articulo: 10,
-            cod_registro: 'abc123',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'USA',
             asignado: false,
             id_marca: 6,
@@ -530,11 +485,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 7,
             id_estado_logico: 4,
             id_tipo_articulo: 9,
-            cod_registro: 'abc124',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotación',
             industria: 'Italia',
             asignado: false,
             id_marca: 7,
@@ -542,11 +494,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 6,
             id_estado_logico: 5,
             id_tipo_articulo: 8,
-            cod_registro: 'abc125',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'Francia',
             asignado: false,
             id_marca: 8,
@@ -554,11 +503,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 5,
             id_estado_logico: 6,
             id_tipo_articulo: 10,
-            cod_registro: 'abc126',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'Rusia',
             asignado: false,
             id_marca: 9,
@@ -566,11 +512,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 4,
             id_estado_logico: 7,
             id_tipo_articulo: 7,
-            cod_registro: 'abc127',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'China',
             asignado: false,
             id_marca: 10,
@@ -578,11 +521,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 3,
             id_estado_logico: 6,
             id_tipo_articulo: 6,
-            cod_registro: 'abc128',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'Brasil',
             asignado: false,
             id_marca: 11,
@@ -590,11 +530,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 2,
             id_estado_logico: 5,
             id_tipo_articulo: 5,
-            cod_registro: 'abc129',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotación',
             industria: 'Alemania',
             asignado: false,
             id_marca: 12,
@@ -602,11 +539,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 1,
             id_estado_logico: 4,
             id_tipo_articulo: 4,
-            cod_registro: 'abc130',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'USA',
             asignado: false,
             id_marca: 13,
@@ -614,11 +548,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 8,
             id_estado_logico: 3,
             id_tipo_articulo: 3,
-            cod_registro: 'abc131',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'México',
             asignado: false,
             id_marca: 14,
@@ -626,11 +557,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 7,
             id_estado_logico: 2,
             id_tipo_articulo: 2,
-            cod_registro: 'abc132',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotación',
             industria: 'Perú',
             asignado: false,
             id_marca: 15,
@@ -638,11 +566,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 6,
             id_estado_logico: 1,
             id_tipo_articulo: 1,
-            cod_registro: 'abc133',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'España',
             asignado: false,
             id_marca: 16,
@@ -650,11 +575,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 5,
             id_estado_logico: 8,
             id_tipo_articulo: 10,
-            cod_registro: 'abc134',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'Argentina',
             asignado: false,
             id_marca: 17,
@@ -662,11 +584,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 4,
             id_estado_logico: 7,
             id_tipo_articulo: 9,
-            cod_registro: 'abc135',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'Chile',
             asignado: false,
             id_marca: 18,
@@ -674,11 +593,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 3,
             id_estado_logico: 6,
             id_tipo_articulo: 8,
-            cod_registro: 'abc136',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Incautado',
             industria: 'Colombia',
             asignado: false,
             id_marca: 19,
@@ -686,11 +602,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 2,
             id_estado_logico: 5,
             id_tipo_articulo: 7,
-            cod_registro: 'abc137',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Dotación',
             industria: 'Ecuador',
             asignado: false,
             id_marca: 20,
@@ -698,11 +611,8 @@ export const initialData: SeedData = {
             id_estado_fisico: 1,
             id_estado_logico: 4,
             id_tipo_articulo: 6,
-            cod_registro: 'abc138',
         },
         {
-            fecha_registro: new Date(),
-            procedencia: 'Ministerio de Gobierno',
             industria: 'Venezuela',
             asignado: false,
             id_marca: 21,
@@ -710,8 +620,9 @@ export const initialData: SeedData = {
             id_estado_fisico: 8,
             id_estado_logico: 3,
             id_tipo_articulo: 5,
-            cod_registro: 'abc139',
         }
 
     ]
+
+
 };

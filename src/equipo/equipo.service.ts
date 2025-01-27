@@ -168,14 +168,15 @@ export class EquipoService {
         },
         relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
       })
-    } else {
-      equipo = await this.equipoRepository.findOne({
-        where: {
-          cod_registro: term,
-        },
-        relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
-      })
     }
+    //  else {
+    //   equipo = await this.equipoRepository.findOne({
+    //     where: {
+    //       cod_registro: term,
+    //     },
+    //     relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+    //   })
+    // }
     return equipo;
   }
   async findOneById(id: string) {

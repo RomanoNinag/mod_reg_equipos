@@ -2,21 +2,15 @@ import { Type } from "class-transformer";
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator";
 
 export class CreateArticuloGeneralDto {
-    @IsDate()
-    @Type(() => Date)
-    fecha_registro: Date;
-
-    @IsOptional()
-    @IsString()
-    procedencia?: string;
 
     @IsOptional()
     @IsString()
     industria?: string;
 
     @IsBoolean()
-    asignado: boolean;
-    
+    @IsOptional()
+    asignado?: boolean;
+
     // Relaciones
     @IsInt()
     id_marca: number;

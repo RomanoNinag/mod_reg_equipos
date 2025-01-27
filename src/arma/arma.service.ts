@@ -137,7 +137,29 @@ export class ArmaService implements OnModuleInit {
       where: {
         deleted_at: null,
       },
-      relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo']
+      select: {
+        marca: {
+          id_marca: true,
+          nombre_marca: true
+        },
+        modelo: {
+          id_modelo: true,
+          nombre_modelo: true
+        },
+        estado_fisico: {
+          id_estado_fisico: true,
+          nombre_estado_fisico: true
+        },
+        estado_logico: {
+          id_estado_logico: true,
+          nombre_estado_logico: true
+        },
+        tipo_articulo: {
+          id_tipo_articulo: true,
+          nombre_tipo_articulo: true
+        },
+      },
+      relations: ['marca', 'modelo', 'estado_fisico', 'estado_logico', 'tipo_articulo'],
     });
   }
 

@@ -9,6 +9,7 @@ import { EstadoLogicoService } from 'src/articulo-general-references/estado-logi
 import { TipoArticuloService } from 'src/articulo-general-references/tipo-articulo/tipo-articulo.service';
 import { ArmaService } from 'src/arma/arma.service';
 import { EquipoService } from 'src/equipo/equipo.service';
+import { validateOrReject } from 'class-validator';
 
 @Injectable()
 export class SeedService {

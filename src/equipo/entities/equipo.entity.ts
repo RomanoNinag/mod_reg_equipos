@@ -3,8 +3,5 @@ import { Column, Entity } from "typeorm";
 
 @Entity('equipos')
 export class Equipo extends ArticuloGeneral {
-    @Column('text', {
-        unique: true
-    })
-    cod_registro: string;
+
 }

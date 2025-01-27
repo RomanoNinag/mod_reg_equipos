@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe
 import { ArmaService } from './arma.service';
 import { CreateArmaDto } from './dto/create-arma.dto';
 import { UpdateArmaDto } from './dto/update-arma.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('arma')
